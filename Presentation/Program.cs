@@ -11,6 +11,7 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 
 var app = builder.Build();
 
+app.UseCors(app => app.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 app.MapOpenApi();
 
 app.UseHttpsRedirection();
