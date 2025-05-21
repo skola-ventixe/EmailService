@@ -1,3 +1,4 @@
+using Azure.Messaging.ServiceBus;
 using Presentation.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,7 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
-builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddSingleton<ServiceBusClient>(sp => new ServiceBusClient(builder.Configuration.GetConnectionString("ServiceBus")));
+builder.Services.AddSingleton<IEmailService, EmailService>();
+builder.Services.AddHostedService<EmailServiceBusListener>();
 
 var app = builder.Build();
 

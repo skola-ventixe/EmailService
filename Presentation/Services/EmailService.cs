@@ -15,21 +15,20 @@ public class EmailService(IConfiguration configuration) : IEmailService
     {
         try
         {
-            var connectionString = _configuration["EmailConfig:ConnectionString"];
+            var connectionString = _configuration.GetConnectionString("Email");
             var emailClient = new EmailClient(connectionString);
 
-            var verificationCode = new Random().Next(100000, 999999);
 
             var emailMessage = new EmailMessage(
                 senderAddress: _configuration["EmailConfig:SenderAddress"],
-                content: new EmailContent($"Your Verification Code is {verificationCode}")
+                content: new EmailContent($"Your Verification Code is {request.Code}")
                 {
                     PlainText = $@"
                         Your Verification Code
 
                         Hello,
 
-                        Your verification code is: {verificationCode}
+                        Your verification code is: {request.Code}
 
                         Please enter this code to complete your verification. If you did not request this, please ignore this email.
 
@@ -44,7 +43,7 @@ public class EmailService(IConfiguration configuration) : IEmailService
                             <p>Hello,</p>
                             <p>
                               Your verification code is:
-                              <span style=""font-size: 1.5em; font-weight: bold; color: #2d7ff9;"">{verificationCode}</span>
+                              <span style=""font-size: 1.5em; font-weight: bold; color: #2d7ff9;"">{request.Code}</span>
                             </p>
                             <p>
                               Please enter this code to complete your verification.<br>
