@@ -15,7 +15,7 @@ public class EmailService(IConfiguration configuration) : IEmailService
     {
         try
         {
-            var connectionString = _configuration.GetConnectionString("Email");
+            var connectionString = _configuration["EmailConfig:Email"];
             var emailClient = new EmailClient(connectionString);
 
 
