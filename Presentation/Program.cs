@@ -8,7 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
-builder.Services.AddSingleton<ServiceBusClient>(sp => new ServiceBusClient(builder.Configuration["ServiceBusConnection"]));
+var connection = builder.Configuration["ServiceBusConnection"];
+builder.Services.AddSingleton<ServiceBusClient>(sp => new ServiceBusClient(connection));
 builder.Services.AddSingleton<IEmailService, EmailService>();
 builder.Services.AddHostedService<EmailServiceBusListener>();
 
